@@ -8,3 +8,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         });
     });
 });
+
+// Language switching logic
+const languageSelect = document.getElementById('language-select');
+languageSelect.addEventListener('change', function () {
+    const lang = this.value;
+    document.querySelectorAll('[data-en]').forEach(element => {
+        element.textContent = element.getAttribute(`data-${lang}`);
+    });
+    document.title = document.querySelector('title').getAttribute(`data-${lang}`);
+});
