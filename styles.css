@@ -1,4 +1,4 @@
-/* Enhanced styling with responsiveness and elegant typography */
+/* Dark theme with energy-efficient colors and image styling */
 * {
     margin: 0;
     padding: 0;
@@ -6,16 +6,17 @@
 }
 
 body {
-    font-family: 'SF Pro Text', sans-serif; /* Lighter, more elegant font for body text */
-    color: #1d1d1f;
-    line-height: 1.8; /* Increased for readability */
-    background-color: #f5f5f7;
+    font-family: 'SF Pro Text', sans-serif;
+    color: #e0e0e0; /* Light gray for text */
+    line-height: 1.8;
+    background-color: #121212; /* Dark background */
 }
 
 header {
     text-align: center;
     padding: 120px 20px;
-    background: linear-gradient(to bottom, #ffffff, #f5f5f7);
+    background: linear-gradient(to bottom, #1e1e1e, #121212);
+    position: relative;
 }
 
 nav {
@@ -23,7 +24,7 @@ nav {
     width: 100%;
     top: 0;
     z-index: 10;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(30, 30, 30, 0.9); /* Dark nav with transparency */
     padding: 60px 20px 20px;
 }
 
@@ -31,13 +32,13 @@ nav ul {
     list-style: none;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap; /* Responsive for smaller screens */
+    flex-wrap: wrap;
     gap: 20px;
 }
 
 nav ul li a {
     text-decoration: none;
-    color: #1d1d1f;
+    color: #e0e0e0;
     font-family: 'SF Pro Display', sans-serif;
     font-weight: 400;
     font-size: 1.1rem;
@@ -45,7 +46,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #0071e3;
+    color: #00d4ff; /* Bright cyan for hover */
     transform: scale(1.1);
 }
 
@@ -68,7 +69,7 @@ nav ul li a:hover {
     background: transparent;
     font-family: 'SF Pro Display', sans-serif;
     font-size: 1rem;
-    color: #1d1d1f;
+    color: #e0e0e0;
     cursor: pointer;
 }
 
@@ -76,20 +77,21 @@ nav ul li a:hover {
     font-family: 'SF Pro Display', sans-serif;
     font-size: 3.5rem;
     font-weight: 600;
+    color: #ffffff;
     margin-bottom: 20px;
 }
 
 .hero p {
     font-size: 1.5rem;
-    color: #6e6e73;
+    color: #b0b0b0; /* Softer gray */
     margin-bottom: 30px;
 }
 
 .cta {
     display: inline-block;
     padding: 12px 24px;
-    background: #0071e3;
-    color: #fff;
+    background: #00d4ff; /* Cyan for CTA */
+    color: #121212;
     text-decoration: none;
     border-radius: 25px;
     font-family: 'SF Pro Display', sans-serif;
@@ -98,19 +100,29 @@ nav ul li a:hover {
 }
 
 .cta:hover {
-    background: #005bb5;
+    background: #00b0cc;
     transform: scale(1.05);
+}
+
+.hero-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    margin-top: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 section {
     padding: 80px 20px;
-    text-align: center;
+    background: #1e1e1e; /* Dark section background */
 }
 
 h2 {
     font-family: 'SF Pro Display', sans-serif;
     font-size: 2.5rem;
     font-weight: 600;
+    color: #ffffff;
     margin-bottom: 50px;
 }
 
@@ -122,12 +134,12 @@ h2 {
 }
 
 .card {
-    background: #fff;
+    background: #2a2a2a; /* Darker card background */
     padding: 40px;
     border-radius: 18px;
     width: 100%;
-    max-width: 380px; /* Slightly wider for more elegance */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 380px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s;
 }
 
@@ -135,114 +147,124 @@ h2 {
     transform: translateY(-10px);
 }
 
+.card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
 .card h3 {
     font-family: 'SF Pro Display', sans-serif;
     font-size: 1.8rem;
     font-weight: 400;
+    color: #ffffff;
     margin-bottom: 20px;
 }
 
 .main-text {
     font-size: 1.2rem;
-    color: #1d1d1f;
+    color: #e0e0e0;
     margin-bottom: 15px;
 }
 
 .extra-text {
     font-size: 1.1rem;
-    color: #6e6e73;
+    color: #b0b0b0;
     line-height: 1.9;
-    font-weight: 300; /* Lighter weight for elegance */
+    font-weight: 300;
 }
 
-.fact-list p {
-    font-size: 1.2rem;
-    margin: 25px auto;
-    max-width: 700px;
-    color: #1d1d1f;
+.fact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.fact-item {
+    background: #2a2a2a;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    transition: transform 0.3s;
+}
+
+.fact-item:hover {
+    transform: translateY(-5px);
+}
+
+.fact-item h4 {
+    font-family: 'SF Pro Display', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.fact-item p {
+    font-family: 'SF Pro Text', sans-serif;
+    font-size: 1.1rem;
+    color: #b0b0b0;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.highlight {
+    display: block;
+    font-family: 'SF Pro Display', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #00d4ff; /* Cyan for highlights */
+    text-align: center;
 }
 
 footer {
     text-align: center;
     padding: 30px 20px;
-    background: #fff;
-    color: #6e6e73;
+    background: #1e1e1e;
+    color: #b0b0b0;
     font-size: 1rem;
 }
 
 /* Responsive Design */
-@media (max-width: 768px) { /* Tablets like iPads */
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-    .hero p {
-        font-size: 1.2rem;
-    }
-    h2 {
-        font-size: 2rem;
-    }
-    .card {
-        padding: 30px;
-        max-width: 100%;
-    }
-    .main-text {
-        font-size: 1.1rem;
-    }
-    .extra-text {
-        font-size: 1rem;
-    }
-    nav ul {
-        gap: 15px;
-    }
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.5rem; }
+    .hero p { font-size: 1.2rem; }
+    h2 { font-size: 2rem; }
+    .card { padding: 30px; max-width: 100%; }
+    .card-image { height: 150px; }
+    .main-text { font-size: 1.1rem; }
+    .extra-text { font-size: 1rem; }
+    .fact-grid { grid-template-columns: 1fr; gap: 20px; }
+    .fact-item h4 { font-size: 1.4rem; }
+    .fact-item p { font-size: 1rem; }
+    .highlight { font-size: 1.6rem; }
 }
 
-@media (max-width: 480px) { /* Smartphones like iPhones */
-    header {
-        padding: 80px 15px;
-    }
-    .hero h1 {
-        font-size: 2rem;
-    }
-    .hero p {
-        font-size: 1rem;
-    }
-    .cta {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-    nav {
-        padding: 50px 15px 15px;
-    }
-    nav ul {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .language-toggle {
-        top: 15px;
-        right: 15px;
-    }
-    section {
-        padding: 50px 15px;
-    }
-    h2 {
-        font-size: 1.8rem;
-    }
-    .card {
-        padding: 20px;
-    }
-    .card h3 {
-        font-size: 1.5rem;
-    }
-    .main-text {
-        font-size: 1rem;
-    }
-    .extra-text {
-        font-size: 0.9rem;
-    }
-    .fact-list p {
-        font-size: 1rem;
-    }
-    footer {
-        font-size: 0.9rem;
-    }
+@media (max-width: 480px) {
+    header { padding: 80px 15px; }
+    .hero h1 { font-size: 2rem; }
+    .hero p { font-size: 1rem; }
+    .cta { padding: 10px 20px; font-size: 0.9rem; }
+    nav { padding: 50px 15px 15px; }
+    nav ul { flex-direction: column; gap: 10px; }
+    .language-toggle { top: 15px; right: 15px; }
+    section { padding: 50px 15px; }
+    h2 { font-size: 1.8rem; }
+    .card { padding: 20px; }
+    .card-image { height: 120px; }
+    .card h3 { font-size: 1.5rem; }
+    .main-text { font-size: 1rem; }
+    .extra-text { font-size: 0.9rem; }
+    .fact-item { padding: 20px; }
+    .fact-item h4 { font-size: 1.3rem; }
+    .fact-item p { font-size: 0.9rem; }
+    .highlight { font-size: 1.4rem; }
+    footer { font-size: 0.9rem; }
 }
