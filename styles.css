@@ -176,7 +176,7 @@ h2 {
     line-height: 1.9;
     font-weight: 300;
 }
-
+/* Previous styles remain unchanged up to the facts section */
 .fact-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -188,9 +188,9 @@ h2 {
 
 .fact-item {
     background: #2a2a2a;
-    padding: 30px;
+    padding: 40px; /* More padding for readability */
     border-radius: 18px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
     text-align: left;
     transition: transform 0.3s;
 }
@@ -201,70 +201,82 @@ h2 {
 
 .fact-item h4 {
     font-family: 'SF Pro Display', sans-serif;
-    font-size: 1.6rem;
+    font-size: 1.8rem; /* Larger for emphasis */
     font-weight: 400;
     color: #ffffff;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .fact-item p {
     font-family: 'SF Pro Text', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.2rem; /* Bigger text for clarity */
     color: #b0b0b0;
-    line-height: 1.8;
-    margin-bottom: 15px;
+    line-height: 1.9;
+    margin-bottom: 25px;
 }
 
-.highlight {
+.comparison {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    text-align: center;
+}
+
+.ev-stat, .ice-stat {
     display: block;
     font-family: 'SF Pro Display', sans-serif;
-    font-size: 1.8rem;
+    font-size: 2rem; /* Larger for impact */
     font-weight: 600;
-    color: #00d4ff; /* Cyan for highlights */
-    text-align: center;
+    padding: 10px 20px; /* Box-like styling */
+    border-radius: 10px;
+    flex: 1;
 }
 
-footer {
-    text-align: center;
-    padding: 30px 20px;
-    background: #1e1e1e;
-    color: #b0b0b0;
-    font-size: 1rem;
+.ev-stat {
+    background: rgba(0, 212, 255, 0.1); /* Cyan tint */
+    color: #00d4ff;
 }
 
-/* Responsive Design */
+.ice-stat {
+    background: rgba(255, 82, 82, 0.1); /* Red tint for ICE */
+    color: #ff5252;
+}
+
+/* Responsive adjustments for facts section */
 @media (max-width: 768px) {
-    .hero h1 { font-size: 2.5rem; }
-    .hero p { font-size: 1.2rem; }
-    h2 { font-size: 2rem; }
-    .card { padding: 30px; max-width: 100%; }
-    .card-image { height: 150px; }
-    .main-text { font-size: 1.1rem; }
-    .extra-text { font-size: 1rem; }
-    .fact-grid { grid-template-columns: 1fr; gap: 20px; }
-    .fact-item h4 { font-size: 1.4rem; }
-    .fact-item p { font-size: 1rem; }
-    .highlight { font-size: 1.6rem; }
+    .fact-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .fact-item h4 {
+        font-size: 1.6rem;
+    }
+    .fact-item p {
+        font-size: 1.1rem;
+    }
+    .ev-stat, .ice-stat {
+        font-size: 1.8rem;
+        padding: 8px 15px;
+    }
+    .comparison {
+        flex-direction: column;
+        gap: 15px;
+    }
 }
 
 @media (max-width: 480px) {
-    header { padding: 80px 15px; }
-    .hero h1 { font-size: 2rem; }
-    .hero p { font-size: 1rem; }
-    .cta { padding: 10px 20px; font-size: 0.9rem; }
-    nav { padding: 50px 15px 15px; }
-    nav ul { flex-direction: column; gap: 10px; }
-    .language-toggle { top: 15px; right: 15px; }
-    section { padding: 50px 15px; }
-    h2 { font-size: 1.8rem; }
-    .card { padding: 20px; }
-    .card-image { height: 120px; }
-    .card h3 { font-size: 1.5rem; }
-    .main-text { font-size: 1rem; }
-    .extra-text { font-size: 0.9rem; }
-    .fact-item { padding: 20px; }
-    .fact-item h4 { font-size: 1.3rem; }
-    .fact-item p { font-size: 0.9rem; }
-    .highlight { font-size: 1.4rem; }
-    footer { font-size: 0.9rem; }
+    .fact-item {
+        padding: 25px;
+    }
+    .fact-item h4 {
+        font-size: 1.4rem;
+    }
+    .fact-item p {
+        font-size: 1rem;
+    }
+    .ev-stat, .ice-stat {
+        font-size: 1.6rem;
+        padding: 6px 10px;
+    }
+}
 }
