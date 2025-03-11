@@ -30,6 +30,7 @@
             width: 100%;
             max-width: 700px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         }
 
         .container:hover {
@@ -107,6 +108,15 @@
             box-shadow: 0 8px 20px rgba(34,197,94,0.4);
         }
 
+        #undoBtn {
+            background: #f97316;
+        }
+
+        #undoBtn:hover {
+            background: #ea580c;
+            box-shadow: 0 8px 20px rgba(249,115,22,0.4);
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(9, minmax(30px, 60px));
@@ -120,7 +130,7 @@
             max-width: 540px;
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
             transition: transform 0.2s ease;
-            aspect-ratio: 1 / 1; /* Maintain square shape */
+            aspect-ratio: 1 / 1;
         }
 
         .grid:hover {
@@ -155,10 +165,11 @@
         }
 
         .cell:focus {
-            outline: none;
+            outline: 2px solid #3b82f6;
             background: #eff6ff;
             box-shadow: 0 0 8px rgba(59,130,246,0.5);
             transform: scale(1.05);
+            z-index: 1;
         }
 
         .cell.initial {
@@ -176,6 +187,10 @@
             background: #fee2e2;
             color: #dc2626;
             animation: errorFade 0.5s ease;
+        }
+
+        .cell.highlight {
+            background: #f0f5ff;
         }
 
         @keyframes hintFade {
@@ -263,6 +278,23 @@
             font-size: clamp(1.2rem, 3vw, 1.5rem);
         }
 
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: #3b82f6;
+            display: none;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 1.5rem;
@@ -314,9 +346,10 @@
             <button onclick="newGame('expert')">Expert</button>
             <button onclick="showTutorial()">Tutorial</button>
             <button id="hintBtn" onclick="giveHint()">Hint</button>
+            <button id="undoBtn" onclick="undoMove()">Undo</button>
         </div>
         <div id="timer">Time: 00:00</div>
-        <div id="grid" class="grid"></div>
+        <div id="grid" class="grid" tabindex="0"></div>
         <div id="result"></div>
         <div id="tutorial">
             <h2>How to Play Sudoku</h2>
@@ -328,6 +361,7 @@
             </ul>
             <p>Begin with the provided numbers, type your solutions into empty cells, and use hints when needed. Enjoy the puzzle-solving journey!</p>
         </div>
+        <div id="loading">Generating...</div>
     </div>
 
     <script>
@@ -336,6 +370,7 @@
         let timerInterval;
         let seconds = 0;
         let initialCells = [];
+        let moveHistory = [];
 
         function generateSudoku() {
             const newBoard = Array(9).fill().map(() => Array(9).fill(0));
@@ -394,6 +429,7 @@
             const fullSolution = generateSudoku();
             board = Array(9).fill().map(() => Array(9).fill(0));
             initialCells = [];
+            moveHistory = [];
 
             const cellsPerBox = {
                 'easy': 6,    // 30% empty (3 empty per 3x3)
@@ -434,15 +470,20 @@
                     const cell = document.createElement('input');
                     cell.className = 'cell';
                     cell.type = 'text';
+                    cell.setAttribute('aria-label', `Cell at row ${i + 1}, column ${j + 1}`);
                     if (initialCells.some(([r, c]) => r === i && c === j)) {
                         cell.value = board[i][j];
                         cell.classList.add('initial');
                         cell.readOnly = true;
                     }
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
                     cell.addEventListener('input', (e) => {
                         const value = e.target.value;
                         if (/^[1-9]$/.test(value)) {
+                            const oldValue = board[i][j];
                             board[i][j] = parseInt(value);
+                            moveHistory.push({ row: i, col: j, oldValue, newValue: parseInt(value) });
                             checkCompletion();
                         } else {
                             e.target.value = '';
@@ -451,10 +492,30 @@
                     });
                     cell.addEventListener('focus', () => {
                         cell.select();
+                        highlightRelatedCells(i, j);
                     });
+                    cell.addEventListener('blur', clearHighlights);
                     grid.appendChild(cell);
                 }
             }
+            grid.focus(); // Set initial focus for keyboard navigation
+        }
+
+        function highlightRelatedCells(row, col) {
+            const cells = document.querySelectorAll('.cell');
+            clearHighlights();
+            cells.forEach(cell => {
+                const r = parseInt(cell.dataset.row);
+                const c = parseInt(cell.dataset.col);
+                if (r === row || c === col || 
+                    (Math.floor(r / 3) === Math.floor(row / 3) && Math.floor(c / 3) === Math.floor(col / 3))) {
+                    cell.classList.add('highlight');
+                }
+            });
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('.cell').forEach(cell => cell.classList.remove('highlight'));
         }
 
         function getPossibleValues(row, col) {
@@ -481,12 +542,24 @@
                             board[i][j] = possible[0];
                             cell.value = possible[0];
                             cell.classList.add('hint');
+                            moveHistory.push({ row: i, col: j, oldValue: 0, newValue: possible[0] });
                             setTimeout(() => cell.classList.remove('hint'), 1000);
                             return;
                         }
                     }
                 }
             }
+        }
+
+        function undoMove() {
+            if (moveHistory.length === 0) return;
+            const lastMove = moveHistory.pop();
+            const { row, col, oldValue } = lastMove;
+            board[row][col] = oldValue;
+            const cells = document.querySelectorAll('.cell');
+            const cell = cells[row * 9 + col];
+            cell.value = oldValue === 0 ? '' : oldValue;
+            checkCompletion();
         }
 
         function newGame(difficulty) {
@@ -497,8 +570,13 @@
             document.getElementById('result').textContent = '';
             document.getElementById('result').className = '';
             document.getElementById('tutorial').style.display = 'none';
-            createGameBoard(difficulty);
-            renderBoard();
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            setTimeout(() => {
+                createGameBoard(difficulty);
+                renderBoard();
+                loading.style.display = 'none';
+            }, 500); // Simulate generation delay for loading effect
         }
 
         function updateTimer() {
@@ -569,6 +647,40 @@
                 requestAnimationFrame(frame);
             })();
         }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const focused = document.activeElement;
+            if (!focused.classList.contains('cell') || focused.readOnly) return;
+
+            const row = parseInt(focused.dataset.row);
+            const col = parseInt(focused.dataset.col);
+            const cells = document.querySelectorAll('.cell');
+
+            let newRow = row;
+            let newCol = col;
+
+            switch (e.key) {
+                case 'ArrowUp':
+                    newRow = Math.max(0, row - 1);
+                    break;
+                case 'ArrowDown':
+                    newRow = Math.min(8, row + 1);
+                    break;
+                case 'ArrowLeft':
+                    newCol = Math.max(0, col - 1);
+                    break;
+                case 'ArrowRight':
+                    newCol = Math.min(8, col + 1);
+                    break;
+                default:
+                    return;
+            }
+
+            const newIndex = newRow * 9 + newCol;
+            cells[newIndex].focus();
+            e.preventDefault();
+        });
 
         // Load custom font and confetti script
         const fontLink = document.createElement('link');
