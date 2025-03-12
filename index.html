@@ -40,7 +40,7 @@
 
         h1 {
             color: #1e293b;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
             font-weight: 700;
             text-align: center;
             font-size: clamp(1.8rem, 5vw, 2.8rem);
@@ -51,19 +51,66 @@
             color: transparent;
         }
 
-        .controls {
+        .difficulty-controls {
             display: flex;
             flex-wrap: wrap;
             gap: 0.8rem;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .utility-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .language-toggle {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .lang-option {
+            display: flex;
+            align-items: center;
+            padding: 0.4rem 0.8rem;
+            border-radius: 12px;
+            background: #64748b;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .lang-option:hover {
+            background: #475569;
+        }
+
+        .lang-option.active {
+            background: #dbeafe;
+            color: #1e293b;
+            border: 2px solid #3b82f6;
+        }
+
+        .flag {
+            width: 20px;
+            height: 12px;
+            margin-right: 0.4rem;
+            border-radius: 2px;
         }
 
         button {
             padding: 0.6rem 1.2rem;
             border: none;
             border-radius: 12px;
-            background: #3b82f6;
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -94,9 +141,40 @@
         }
 
         button:hover {
-            background: #2563eb;
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(59,130,246,0.4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .difficulty-btn {
+            background: #3b82f6;
+        }
+
+        .difficulty-btn:hover {
+            background: #2563eb;
+        }
+
+        .difficulty-btn.easy {
+            background: #22c55e;
+        }
+
+        .difficulty-btn.easy:hover {
+            background: #16a34a;
+        }
+
+        .difficulty-btn.medium {
+            background: #f97316;
+        }
+
+        .difficulty-btn.medium:hover {
+            background: #ea580c;
+        }
+
+        .difficulty-btn.expert {
+            background: #dc2626;
+        }
+
+        .difficulty-btn.expert:hover {
+            background: #b91c1c;
         }
 
         #hintBtn {
@@ -105,7 +183,6 @@
 
         #hintBtn:hover {
             background: #16a34a;
-            box-shadow: 0 8px 20px rgba(34,197,94,0.4);
         }
 
         #undoBtn {
@@ -114,7 +191,26 @@
 
         #undoBtn:hover {
             background: #ea580c;
-            box-shadow: 0 8px 20px rgba(249,115,22,0.4);
+        }
+
+        #checkLiveBtn {
+            background: #8b5cf6;
+        }
+
+        #checkLiveBtn:hover {
+            background: #7c3aed;
+        }
+
+        #checkLiveBtn.active {
+            background: #d8b4fe;
+            color: #1e293b;
+        }
+
+        #difficultyIndicator {
+            text-align: center;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            color: #475569;
+            margin-bottom: 1rem;
         }
 
         .grid {
@@ -301,9 +397,9 @@
                 border-radius: 15px;
             }
 
-            .controls {
+            .difficulty-controls, .utility-controls {
                 gap: 0.5rem;
-                margin-bottom: 1.5rem;
+                margin-bottom: 1rem;
             }
 
             button {
@@ -328,6 +424,20 @@
                 margin-top: 1.5rem;
                 padding: 1rem;
             }
+
+            .language-toggle {
+                margin-bottom: 0.5rem;
+            }
+
+            .lang-option {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .flag {
+                width: 16px;
+                height: 10px;
+            }
         }
 
         @media (max-width: 400px) {
@@ -339,29 +449,56 @@
 </head>
 <body>
     <div class="container">
-        <h1>Sudoku Master</h1>
-        <div class="controls">
-            <button onclick="newGame('easy')">Easy</button>
-            <button onclick="newGame('medium')">Medium</button>
-            <button onclick="newGame('expert')">Expert</button>
-            <button onclick="showTutorial()">Tutorial</button>
-            <button id="hintBtn" onclick="giveHint()">Hint</button>
-            <button id="undoBtn" onclick="undoMove()">Undo</button>
+        <h1 data-en="Sudoku Master" data-es="Maestro del Sudoku">Sudoku Master</h1>
+        <div class="language-toggle">
+            <div class="lang-option" data-lang="en">
+                <img src="https://flagcdn.com/w20/gb.png" alt="UK Flag" class="flag"> EN
+            </div>
+            <div class="lang-option" data-lang="es">
+                <img src="https://flagcdn.com/w20/es.png" alt="Spanish Flag" class="flag"> ES
+            </div>
         </div>
-        <div id="timer">Time: 00:00</div>
+        <div class="difficulty-controls">
+            <button class="difficulty-btn easy" onclick="newGame('easy')" data-en="Easy" data-es="Fácil">Easy</button>
+            <button class="difficulty-btn medium" onclick="newGame('medium')" data-en="Medium" data-es="Medio">Medium</button>
+            <button class="difficulty-btn expert" onclick="newGame('expert')" data-en="Expert" data-es="Experto">Expert</button>
+            <button class="difficulty-btn" onclick="showTutorial()" data-en="Tutorial" data-es="Tutorial">Tutorial</button>
+        </div>
+        <div id="difficultyIndicator" data-en="Difficulty: Easy" data-es="Dificultad: Fácil">Difficulty: Easy</div>
+        <div id="timer" data-en="Time: 00:00" data-es="Tiempo: 00:00">Time: 00:00</div>
         <div id="grid" class="grid" tabindex="0"></div>
         <div id="result"></div>
-        <div id="tutorial">
-            <h2>How to Play Sudoku</h2>
-            <p>Sudoku is a captivating logic puzzle where you fill a 9×9 grid with numbers 1-9, adhering to these rules:</p>
-            <ul>
-                <li>Every row must contain digits 1-9 without repetition</li>
-                <li>Every column must include digits 1-9 with no duplicates</li>
-                <li>Each 3×3 subgrid must feature digits 1-9 uniquely</li>
-            </ul>
-            <p>Begin with the provided numbers, type your solutions into empty cells, and use hints when needed. Enjoy the puzzle-solving journey!</p>
+        <div class="utility-controls">
+            <button id="hintBtn" onclick="giveHint()" data-en="Hint" data-es="Pista">Hint</button>
+            <button id="undoBtn" onclick="undoMove()" data-en="Undo" data-es="Deshacer">Undo</button>
+            <button id="checkLiveBtn" onclick="toggleLiveCheck()" data-en="Checking" data-es="Verificar">Checking</button>
         </div>
-        <div id="loading">Generating...</div>
+        <div id="tutorial">
+            <h2 data-en="How to Play Sudoku" data-es="Cómo Jugar Sudoku">How to Play Sudoku</h2>
+            <p data-en="Sudoku is a captivating logic puzzle where you fill a 9×9 grid with numbers 1-9, adhering to these rules:" 
+               data-es="Sudoku es un fascinante rompecabezas lógico donde llenas una cuadrícula de 9×9 con números del 1 al 9, siguiendo estas reglas:">
+                Sudoku is a captivating logic puzzle where you fill a 9×9 grid with numbers 1-9, adhering to these rules:
+            </p>
+            <ul>
+                <li data-en="Every row must contain digits 1-9 without repetition" 
+                    data-es="Cada fila debe contener los dígitos del 1 al 9 sin repetición">
+                    Every row must contain digits 1-9 without repetition
+                </li>
+                <li data-en="Every column must include digits 1-9 with no duplicates" 
+                    data-es="Cada columna debe incluir los dígitos del 1 al 9 sin duplicados">
+                    Every column must include digits 1-9 with no duplicates
+                </li>
+                <li data-en="Each 3×3 subgrid must feature digits 1-9 uniquely" 
+                    data-es="Cada subcuadrícula de 3×3 debe tener los dígitos del 1 al 9 de forma única">
+                    Each 3×3 subgrid must feature digits 1-9 uniquely
+                </li>
+            </ul>
+            <p data-en="Begin with the provided numbers, type your solutions into empty cells, and use hints when needed. Enjoy the puzzle-solving journey!" 
+               data-es="Comienza con los números proporcionados, escribe tus soluciones en las celdas vacías y usa pistas cuando sea necesario. ¡Disfruta del viaje resolviendo el rompecabezas!">
+                Begin with the provided numbers, type your solutions into empty cells, and use hints when needed. Enjoy the puzzle-solving journey!
+            </p>
+        </div>
+        <div id="loading" data-en="Generating..." data-es="Generando...">Generating...</div>
     </div>
 
     <script>
@@ -371,6 +508,60 @@
         let seconds = 0;
         let initialCells = [];
         let moveHistory = [];
+        let liveCheckEnabled = false;
+        let currentLang = 'en';
+        let currentDifficulty = 'easy';
+
+        const translations = {
+            en: {
+                title: 'Sudoku Master',
+                easy: 'Easy',
+                medium: 'Medium',
+                expert: 'Expert',
+                tutorial: 'Tutorial',
+                hint: 'Hint',
+                undo: 'Undo',
+                checking: 'Checking',
+                stopChecking: 'Stop',
+                timer: 'Time: 00:00',
+                generating: 'Generating...',
+                tutorialTitle: 'How to Play Sudoku',
+                tutorialDesc: 'Sudoku is a captivating logic puzzle where you fill a 9×9 grid with numbers 1-9, adhering to these rules:',
+                rule1: 'Every row must contain digits 1-9 without repetition',
+                rule2: 'Every column must include digits 1-9 with no duplicates',
+                rule3: 'Each 3×3 subgrid must feature digits 1-9 uniquely',
+                tutorialEnd: 'Begin with the provided numbers, type your solutions into empty cells, and use hints when needed. Enjoy the puzzle-solving journey!',
+                success: 'Congratulations! Puzzle Solved!',
+                incorrect: 'Incorrect Solution',
+                difficultyEasy: 'Difficulty: Easy',
+                difficultyMedium: 'Difficulty: Medium',
+                difficultyExpert: 'Difficulty: Expert'
+            },
+            es: {
+                title: 'Maestro del Sudoku',
+                easy: 'Fácil',
+                medium: 'Medio',
+                expert: 'Experto',
+                tutorial: 'Tutorial',
+                hint: 'Pista',
+                undo: 'Deshacer',
+                checking: 'Verificar',
+                stopChecking: 'Parar',
+                timer: 'Tiempo: 00:00',
+                generating: 'Generando...',
+                tutorialTitle: 'Cómo Jugar Sudoku',
+                tutorialDesc: 'Sudoku es un fascinante rompecabezas lógico donde llenas una cuadrícula de 9×9 con números del 1 al 9, siguiendo estas reglas:',
+                rule1: 'Cada fila debe contener los dígitos del 1 al 9 sin repetición',
+                rule2: 'Cada columna debe incluir los dígitos del 1 al 9 sin duplicados',
+                rule3: 'Cada subcuadrícula de 3×3 debe tener los dígitos del 1 al 9 de forma única',
+                tutorialEnd: 'Comienza con los números proporcionados, escribe tus soluciones en las celdas vacías y usa pistas cuando sea necesario. ¡Disfruta del viaje resolviendo el rompecabezas!',
+                success: '¡Felicidades! ¡Rompecabezas Resuelto!',
+                incorrect: 'Solución Incorrecta',
+                difficultyEasy: 'Dificultad: Fácil',
+                difficultyMedium: 'Dificultad: Medio',
+                difficultyExpert: 'Dificultad: Experto'
+            }
+        };
 
         function generateSudoku() {
             const newBoard = Array(9).fill().map(() => Array(9).fill(0));
@@ -431,35 +622,32 @@
             initialCells = [];
             moveHistory = [];
 
-            const cellsPerBox = {
-                'easy': 6,    // 30% empty (3 empty per 3x3)
-                'medium': 5,  // 42% empty (~4 empty per 3x3)
-                'expert': 4   // 55% empty (5 empty per 3x3)
+            const totalCells = {
+                'easy': 36,    // ~44% filled
+                'medium': 30,  // ~37% filled
+                'expert': 24   // ~30% filled
             }[difficulty];
 
-            for (let boxRow = 0; boxRow < 9; boxRow += 3) {
-                for (let boxCol = 0; boxCol < 9; boxCol += 3) {
-                    const positions = [];
-                    for (let i = 0; i < 3; i++) {
-                        for (let j = 0; j < 3; j++) {
-                            positions.push([boxRow + i, boxCol + j]);
-                        }
-                    }
-                    
-                    for (let i = positions.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [positions[i], positions[j]] = [positions[j], positions[i]];
-                    }
-
-                    for (let i = 0; i < cellsPerBox; i++) {
-                        const [row, col] = positions[i];
-                        board[row][col] = fullSolution[row][col];
-                        initialCells.push([row, col]);
-                    }
+            const positions = [];
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    positions.push([i, j]);
                 }
             }
 
+            for (let i = positions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [positions[i], positions[j]] = [positions[j], positions[i]];
+            }
+
+            for (let i = 0; i < totalCells; i++) {
+                const [row, col] = positions[i];
+                board[row][col] = fullSolution[row][col];
+                initialCells.push([row, col]);
+            }
+
             solution = fullSolution.map(row => [...row]);
+            currentDifficulty = difficulty;
         }
 
         function renderBoard() {
@@ -484,10 +672,12 @@
                             const oldValue = board[i][j];
                             board[i][j] = parseInt(value);
                             moveHistory.push({ row: i, col: j, oldValue, newValue: parseInt(value) });
+                            if (liveCheckEnabled) checkLive(i, j);
                             checkCompletion();
                         } else {
                             e.target.value = '';
                             board[i][j] = 0;
+                            if (liveCheckEnabled) cell.classList.remove('error');
                         }
                     });
                     cell.addEventListener('focus', () => {
@@ -498,7 +688,7 @@
                     grid.appendChild(cell);
                 }
             }
-            grid.focus(); // Set initial focus for keyboard navigation
+            grid.focus();
         }
 
         function highlightRelatedCells(row, col) {
@@ -534,18 +724,12 @@
         function giveHint() {
             for (let i = 0; i < 9; i++) {
                 for (let j = 0; j < 9; j++) {
-                    if (board[i][j] === 0) {
-                        const possible = getPossibleValues(i, j);
-                        if (possible.length > 0) {
-                            const cells = document.querySelectorAll('.cell');
-                            const cell = cells[i * 9 + j];
-                            board[i][j] = possible[0];
-                            cell.value = possible[0];
-                            cell.classList.add('hint');
-                            moveHistory.push({ row: i, col: j, oldValue: 0, newValue: possible[0] });
-                            setTimeout(() => cell.classList.remove('hint'), 1000);
-                            return;
-                        }
+                    if (board[i][j] === 0 && getPossibleValues(i, j).length > 0) {
+                        const cells = document.querySelectorAll('.cell');
+                        const cell = cells[i * 9 + j];
+                        cell.classList.add('hint');
+                        setTimeout(() => cell.classList.remove('hint'), 2000);
+                        return;
                     }
                 }
             }
@@ -559,7 +743,35 @@
             const cells = document.querySelectorAll('.cell');
             const cell = cells[row * 9 + col];
             cell.value = oldValue === 0 ? '' : oldValue;
+            if (liveCheckEnabled) checkLive(row, col);
             checkCompletion();
+        }
+
+        function toggleLiveCheck() {
+            liveCheckEnabled = !liveCheckEnabled;
+            const checkBtn = document.getElementById('checkLiveBtn');
+            checkBtn.classList.toggle('active');
+            checkBtn.textContent = liveCheckEnabled ? translations[currentLang].stopChecking : translations[currentLang].checking;
+            if (liveCheckEnabled) {
+                for (let i = 0; i < 9; i++) {
+                    for (let j = 0; j < 9; j++) {
+                        if (!initialCells.some(([r, c]) => r === i && c === j)) {
+                            checkLive(i, j);
+                        }
+                    }
+                }
+            } else {
+                document.querySelectorAll('.cell').forEach(cell => cell.classList.remove('error'));
+            }
+        }
+
+        function checkLive(row, col) {
+            const cells = document.querySelectorAll('.cell');
+            const cell = cells[row * 9 + col];
+            cell.classList.remove('error');
+            if (board[row][col] !== 0 && board[row][col] !== solution[row][col]) {
+                cell.classList.add('error');
+            }
         }
 
         function newGame(difficulty) {
@@ -571,19 +783,23 @@
             document.getElementById('result').className = '';
             document.getElementById('tutorial').style.display = 'none';
             const loading = document.getElementById('loading');
+            loading.textContent = translations[currentLang].generating;
             loading.style.display = 'block';
             setTimeout(() => {
                 createGameBoard(difficulty);
                 renderBoard();
+                updateDifficultyIndicator();
                 loading.style.display = 'none';
-            }, 500); // Simulate generation delay for loading effect
+                if (liveCheckEnabled) toggleLiveCheck();
+                updateLanguage();
+            }, 500);
         }
 
         function updateTimer() {
             const minutes = Math.floor(seconds / 60);
             const secs = seconds % 60;
             document.getElementById('timer').textContent = 
-                `Time: ${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                `${translations[currentLang].timer.split(':')[0]}: ${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
             seconds++;
         }
 
@@ -608,11 +824,11 @@
 
             const result = document.getElementById('result');
             if (isCorrect) {
-                result.textContent = 'Congratulations! Puzzle Solved!';
+                result.textContent = translations[currentLang].success;
                 result.className = 'success';
                 confettiEffect();
             } else {
-                result.textContent = 'Incorrect Solution';
+                result.textContent = translations[currentLang].incorrect;
                 result.className = 'incorrect';
             }
         }
@@ -620,6 +836,38 @@
         function showTutorial() {
             const tutorial = document.getElementById('tutorial');
             tutorial.style.display = tutorial.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.classList.toggle('active', option.dataset.lang === lang);
+            });
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            document.querySelector('h1').textContent = translations[currentLang].title;
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.textContent = translations[currentLang][btn.dataset.en.toLowerCase()];
+            });
+            document.getElementById('hintBtn').textContent = translations[currentLang].hint;
+            document.getElementById('undoBtn').textContent = translations[currentLang].undo;
+            const checkBtn = document.getElementById('checkLiveBtn');
+            checkBtn.textContent = liveCheckEnabled ? translations[currentLang].stopChecking : translations[currentLang].checking;
+            document.getElementById('timer').textContent = translations[currentLang].timer;
+            document.getElementById('tutorial').querySelector('h2').textContent = translations[currentLang].tutorialTitle;
+            document.getElementById('tutorial').querySelectorAll('p')[0].textContent = translations[currentLang].tutorialDesc;
+            document.getElementById('tutorial').querySelectorAll('li')[0].textContent = translations[currentLang].rule1;
+            document.getElementById('tutorial').querySelectorAll('li')[1].textContent = translations[currentLang].rule2;
+            document.getElementById('tutorial').querySelectorAll('li')[2].textContent = translations[currentLang].rule3;
+            document.getElementById('tutorial').querySelectorAll('p')[1].textContent = translations[currentLang].tutorialEnd;
+            updateDifficultyIndicator();
+        }
+
+        function updateDifficultyIndicator() {
+            const indicator = document.getElementById('difficultyIndicator');
+            indicator.textContent = translations[currentLang][`difficulty${currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)}`];
         }
 
         function confettiEffect() {
@@ -682,6 +930,11 @@
             e.preventDefault();
         });
 
+        // Language toggle event listeners
+        document.querySelectorAll('.lang-option').forEach(option => {
+            option.addEventListener('click', () => setLanguage(option.dataset.lang));
+        });
+
         // Load custom font and confetti script
         const fontLink = document.createElement('link');
         fontLink.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap';
@@ -693,6 +946,8 @@
         confettiScript.async = true;
         document.head.appendChild(confettiScript);
 
+        // Set initial language to English
+        setLanguage('en');
         newGame('easy');
     </script>
 </body>
